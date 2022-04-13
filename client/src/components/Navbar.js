@@ -1,7 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <nav className="flex justify-center items-center">
       <NavLink

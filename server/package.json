@@ -1,20 +1,30 @@
 {
-   "name": "server",
-   "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
-   "type": "commonjs",
-   "devDependencies": {
-      "ts-node": "10.4.0",
-      "@types/node": "^16.11.10",
-      "typescript": "4.5.2"
-   },
-   "dependencies": {
-      "typeorm": "0.2.45",
-      "reflect-metadata": "^0.1.13",
-      "pg": "^8.4.0"
-   },
-   "scripts": {
-      "start": "ts-node src/index.ts",
-      "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
-   }
+  "name": "server",
+  "version": "0.0.1",
+  "description": "Awesome project developed with TypeORM.",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^16.11.10",
+    "ts-node": "10.4.0",
+    "typescript": "4.5.2"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "pg": "^8.4.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "0.2.45",
+    "typeorm-seeding": "^1.6.1"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "typeorm": "ts-node ./node_modules/.bin/typeorm -f ./src/config/ormconfig.ts",
+    "migration:generate": "npm run typeorm migration:generate -- -n",
+    "migration:run": "npm run typeorm migration:run",
+    "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js  --configName src/config/ormconfig.ts seed"
+  }
 }

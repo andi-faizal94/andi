@@ -1,21 +1,45 @@
 import "reflect-metadata";
-import {createConnection} from "typeorm";
-import {User} from "./entity/User";
+import { createConnection } from "typeorm";
+import { User } from "./entity/User";
+import * as dotenv from "dotenv";
+import * as express from "express";
+import * as cors from "cors";
+import ormconfig from "./config/ormconfig";
+import index from "./routes/index";
+dotenv.config();
 
-createConnection().then(async connection => {
+async function main() {
+  try {
+    const connection = await createConnection(ormconfig);
+    const app = express();
 
-    console.log("Inserting a new user into the database...");
-    const user = new User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
-    user.age = 25;
-    await connection.manager.save(user);
-    console.log("Saved a new user with id: " + user.id);
+    // morgan to log methods
+    // app.use(morgan("dev"));
 
-    console.log("Loading users from the database...");
-    const users = await connection.manager.find(User);
-    console.log("Loaded users: ", users);
+    // body-parser
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
-    console.log("Here you can setup and run express/koa/any other framework.");
+    // you can write cors with 2 ways:
 
-}).catch(error => console.log(error));
+    // 1. npm install cors
+    app.use(cors());
+
+    app.use("/api", index);
+
+    app.use(function (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) {
+      res.status(404).json({ status: 404, message: "Page not found" });
+    });
+
+    app.listen(process.env.SERVER_PORT, () => {
+      console.log(`Server started on port ${process.env.SERVER_PORT}!`);
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+main();
