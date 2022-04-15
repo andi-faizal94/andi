@@ -6,15 +6,17 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
 } from "typeorm";
+import { User } from "./User";
 
 @Entity()
 export class Blog extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
-  blog_id: string;
+  @Column("uuid")
+  user_id: string;
 
   @Column()
   title: string;
@@ -43,4 +45,7 @@ export class Blog extends BaseEntity {
     default: null,
   })
   deletedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.blogs)
+  user: User;
 }
