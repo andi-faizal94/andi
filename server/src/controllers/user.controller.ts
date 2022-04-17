@@ -1,5 +1,5 @@
 import * as express from "express";
-import { getRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { User } from "../entity/User";
 
 // create user
@@ -15,9 +15,8 @@ export const store = async (
       lastName: lastName,
       age: age,
     } = req.body;
-    const userRepository = getRepository(User);
 
-    const user = await userRepository
+    const user = await getConnection()
       .createQueryBuilder()
       .insert()
       .into(User)
@@ -45,13 +44,12 @@ export const index = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const userRepository = getRepository(User);
-
-    const users = await userRepository
-      .createQueryBuilder("user")
-      .leftJoinAndSelect("user.blogs", "blog")
+    const users = await getConnection()
+      .createQueryBuilder()
+      .select("user")
+      .from(User, "user")
+      .leftJoinAndSelect("user.blogs", "blogs")
       .getMany();
-
     return res.status(200).json({
       message: "get user succesfully",
       data: { User: users },
@@ -68,17 +66,18 @@ export const show = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { id: id } = req.params;
-    const userRepository = getRepository(User);
-    const user = await userRepository
+    const { id } = req.params;
+    const users = await getConnection()
       .createQueryBuilder()
       .select("user")
       .from(User, "user")
-      .where("user.id = :id", { id: id });
+      .where("user.id = :id", { id: id })
+      .getOne();
 
-    return res
-      .status(200)
-      .json({ message: "get user by id is succesfully", data: { User: user } });
+    return await res.status(200).json({
+      message: "get user succesfully",
+      data: { User: users },
+    });
   } catch (error) {
     console.error(error);
     next(error);
@@ -94,18 +93,17 @@ export const update = async (
   try {
     const { firstName: firstName, lastName: lastName, age: age } = req.body;
     const { id: id } = req.params;
-    const userRepository = getRepository(User);
 
-    const user = await userRepository
+    const user = await getConnection()
       .createQueryBuilder()
       .update(User)
       .set({ firstName: firstName, lastName: lastName, age: age })
-      .where("id = :id", { id })
+      .where("id = :id", { id: id })
       .execute();
 
-    return res.status(200).json({
+    return await res.status(200).json({
       message: "update user succesfully",
-      data: { User: user },
+      data: { User: id },
     });
   } catch (error) {
     next(error);
@@ -120,17 +118,16 @@ export const destroy = async (
 ): Promise<any> => {
   try {
     const { id: id } = req.params;
-    const userRepository = getRepository(User);
 
-    const user = await userRepository
+    const user = await getConnection()
       .createQueryBuilder()
       .delete()
       .from(User)
-      .where("id = :id", { id })
+      .where("id = :id", { id: id })
       .execute();
-    return res.status(200).json({
+    return await res.status(200).json({
       message: `delete user ${id} succesfully`,
-      data: { User: user },
+      data: { User: id },
     });
   } catch (error) {
     next(error);

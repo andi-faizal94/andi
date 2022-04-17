@@ -1,5 +1,5 @@
 import * as express from "express";
-import { getRepository } from "typeorm";
+import { getConnection, getRepository } from "typeorm";
 import { Blog } from "../entity/Blog";
 
 // create blog
@@ -15,8 +15,7 @@ export const store = async (
       content_blog: content_blog,
       user: userId,
     } = req.body;
-    const blogRepository = getRepository(Blog);
-    const blog = await blogRepository
+    const blog = await getConnection()
       .createQueryBuilder()
       .insert()
       .into(Blog)
@@ -43,12 +42,14 @@ export const index = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const blogRepository = getRepository(Blog);
-
-    const blog = await blogRepository
-      .createQueryBuilder("blogs")
-      .leftJoinAndSelect("blogs.user", "user")
+    const { firstName: firstName } = req.query;
+    const blog = await getConnection()
+      .createQueryBuilder()
+      .select("blog")
+      .from(Blog, "blog")
+      .leftJoinAndSelect("blog.user", "blog")
       .getMany();
+
     return res.status(200).json({
       message: "get user succesfully",
       data: { Blog: blog },
@@ -65,9 +66,8 @@ export const show = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { id: id } = req.params;
-    const blogRepository = getRepository(Blog);
-    const blog = await blogRepository
+    const { id } = req.params;
+    const blog = await getConnection()
       .createQueryBuilder()
       .select("blog")
       .from(Blog, "blog")
@@ -90,18 +90,28 @@ export const update = async (
 ): Promise<any> => {
   try {
     const { id: id } = req.params;
-    const { title: title, image: image, content_blog: content_blog } = req.body;
-    const blogRepository = getRepository(Blog);
-    const blog = await blogRepository
+
+    const {
+      title: title,
+      image: image,
+      content_blog: content_blog,
+      user: userId,
+    } = req.body;
+    const user = await getConnection()
       .createQueryBuilder()
       .update(Blog)
-      .set({ title: title, image: image, content_blog: content_blog })
-      .where("id = :id", { id })
+      .set({
+        title: title,
+        image: image,
+        content_blog: content_blog,
+        user: userId,
+      })
+      .where("id = :id", { id: id })
       .execute();
 
     return res.status(200).json({
       message: "update user succesfully",
-      data: { Blog: blog },
+      data: { Blog: id },
     });
   } catch (error) {
     next(error);
@@ -116,16 +126,15 @@ export const destroy = async (
 ): Promise<any> => {
   try {
     const { id: id } = req.params;
-    const blogRepository = getRepository(Blog);
-    const blog = await blogRepository
+    const user = await getConnection()
       .createQueryBuilder()
       .delete()
       .from(Blog)
-      .where("id = :id", { id })
-      .execute();
+      .where("id = :id", { id: id });
+
     return res.status(200).json({
       message: `delete user ${id} succesfully`,
-      data: { Blog: blog },
+      data: { Blog: id },
     });
   } catch (error) {
     next(error);

@@ -44,6 +44,9 @@ export class Blog extends BaseEntity {
   })
   deletedAt?: Date;
 
-  @ManyToOne(() => User, (user) => user.blogs)
+  @ManyToOne((type) => User, (user) => user.blogs, {
+    eager: true,
+  })
+  @JoinColumn({ name: "user_id" })
   user: User;
 }

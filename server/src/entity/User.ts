@@ -21,13 +21,8 @@ export class User extends BaseEntity {
   @Column()
   age: number;
 
-  @OneToMany(() => Blog, (blog) => blog.user)
+  @OneToMany(() => Blog, (blog) => blog.user, {
+    cascade: true,
+  })
   blogs: Blog[];
-
-  // addBlog(blog: Blog) {
-  //   if (this.blogs === null) {
-  //     this.blogs = new Array<Blog>();
-  //   }
-  //   this.blogs.push(blog);
-  // }
 }
