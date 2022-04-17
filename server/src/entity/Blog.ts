@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { User } from "./User";
 
@@ -15,9 +16,6 @@ export class Blog extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column("uuid")
-  user_id: string;
-
   @Column()
   title: string;
 
@@ -25,7 +23,7 @@ export class Blog extends BaseEntity {
   image: string;
 
   @Column()
-  content_blog;
+  content_blog: string;
 
   @CreateDateColumn({ name: "updated_at", type: "timestamp", default: "now()" })
   createdAt: Date;
@@ -46,6 +44,10 @@ export class Blog extends BaseEntity {
   })
   deletedAt?: Date;
 
-  @ManyToOne(() => User, (user) => user.blogs)
+  @ManyToOne(() => User, (user) => user.blogs, {
+    cascade: ["insert", "update"],
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "user_id" })
   user: User;
 }

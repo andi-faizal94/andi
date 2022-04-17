@@ -12,6 +12,9 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
+  @Column({ type: "uuid", name: "user_id", nullable: true, default: null })
+  user_id: string;
+
   @Column()
   firstName: string;
 
@@ -21,15 +24,13 @@ export class User extends BaseEntity {
   @Column()
   age: number;
 
-  @OneToMany(() => Blog, (blog) => blog.user, {
-    cascade: true,
-  })
+  @OneToMany(() => Blog, (blog) => blog.user)
   blogs: Blog[];
 
-  addBlog(blog: Blog) {
-    if (this.blogs === null) {
-      this.blogs = new Array<Blog>();
-    }
-    this.blogs.push(blog);
-  }
+  // addBlog(blog: Blog) {
+  //   if (this.blogs === null) {
+  //     this.blogs = new Array<Blog>();
+  //   }
+  //   this.blogs.push(blog);
+  // }
 }

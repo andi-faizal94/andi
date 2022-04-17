@@ -2,17 +2,25 @@ import * as express from "express";
 import { getRepository } from "typeorm";
 import { Blog } from "../entity/Blog";
 
-// create user
+// create blog
 export const store = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    let blog = new Blog();
-    blog = { ...req.body };
+    const { title, image, content_blog } = req.body;
     const blogRepository = getRepository(Blog);
-    await blogRepository.save(blog);
+    const blog = await blogRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Blog)
+      .values({
+        title,
+        image,
+        content_blog,
+      })
+      .execute();
     return res.status(201).json({
       message: "created user succesfully",
       data: [blog],
@@ -30,10 +38,14 @@ export const index = async (
 ): Promise<any> => {
   try {
     const blogRepository = getRepository(Blog);
-    const blogs = await blogRepository.find();
+
+    const blog = await blogRepository
+      .createQueryBuilder("blogs")
+      .leftJoinAndSelect("blogs.user", "user_id")
+      .getMany();
     return res.status(200).json({
       message: "get user succesfully",
-      data: blogs,
+      data: blog,
     });
   } catch (error) {
     next(error);
@@ -41,30 +53,30 @@ export const index = async (
 };
 
 // get user by id
-export const show = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-): Promise<any> => {
-  try {
-    const { id: id } = req.params;
-    const blogRepository = getRepository(Blog);
+// export const show = async (
+//   req: express.Request,
+//   res: express.Response,
+//   next: express.NextFunction
+// ): Promise<any> => {
+//   try {
+//     const { id: id } = req.params;
+//     const blogRepository = getRepository(Blog);
 
-    const UserById = await blogRepository.findOne(id);
-    if (!UserById) {
-      return res.status(404).json({ message: "it's not id" });
-    }
+//     const UserById = await blogRepository.findOne(id);
+//     if (!UserById) {
+//       return res.status(404).json({ message: "it's not id" });
+//     }
 
-    return res
-      .status(200)
-      .json({ message: "get user by id is succesfully", data: UserById });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
+//     return res
+//       .status(200)
+//       .json({ message: "get user by id is succesfully", data: UserById });
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// };
 
-// update user
+// update blog
 export const update = async (
   req: express.Request,
   res: express.Response,
@@ -72,17 +84,15 @@ export const update = async (
 ): Promise<any> => {
   try {
     const { id: id } = req.params;
-    const newBlog = req.body as Blog;
+    const { title, image, content_blog } = req.body;
     const blogRepository = getRepository(Blog);
+    const blog = await blogRepository
+      .createQueryBuilder()
+      .update(Blog)
+      .set({ title, image, content_blog })
+      .where("id = :id", { id })
+      .execute();
 
-    await blogRepository.update(id, newBlog);
-    const blog = await blogRepository.find({
-      id: id,
-    });
-
-    if (!blog) {
-      return res.status(404).json({ message: "it's not id" });
-    }
     return res.status(200).json({
       message: "update user succesfully",
       data: blog,
@@ -92,7 +102,7 @@ export const update = async (
   }
 };
 
-// delete user
+// delete blog
 export const destroy = async (
   req: express.Request,
   res: express.Response,
@@ -101,15 +111,12 @@ export const destroy = async (
   try {
     const { id: id } = req.params;
     const blogRepository = getRepository(Blog);
-
-    const blog = await blogRepository.find({
-      id: id,
-    });
-
-    if (!blog) {
-      return res.status(404).json({ message: "it's not id" });
-    }
-    await blogRepository.remove(blog);
+    const blog = await blogRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Blog)
+      .where("id = :id", { id })
+      .execute();
     return res.status(200).json({
       message: `delete user ${id} succesfully`,
       data: blog,
