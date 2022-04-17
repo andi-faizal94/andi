@@ -44,10 +44,6 @@ export class Blog extends BaseEntity {
   })
   deletedAt?: Date;
 
-  @ManyToOne(() => User, (user) => user.blogs, {
-    cascade: ["insert", "update"],
-    onDelete: "CASCADE",
-  })
-  @JoinColumn({ name: "user", referencedColumnName: "user_id" })
+  @ManyToOne(() => User, (user) => user.blogs)
   user: User;
 }

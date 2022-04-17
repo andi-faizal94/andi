@@ -3,6 +3,6 @@ import { Blog } from "../../entity/Blog";
 
 export default class CreateUsers implements Seeder {
   public async run(factory: Factory): Promise<void> {
-    await factory(Blog)().createMany(10);
+    await factory(Blog)().createMany(2);
   }
 }

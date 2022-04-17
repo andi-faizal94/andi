@@ -9,12 +9,7 @@ export const store = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const {
-      user_id: user_id,
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-    } = req.body;
+    const { firstName: firstName, lastName: lastName, age: age } = req.body;
     const userRepository = getRepository(User);
 
     const user = await userRepository
@@ -22,10 +17,9 @@ export const store = async (
       .insert()
       .into(User)
       .values({
-        user_id,
-        firstName,
-        lastName,
-        age,
+        firstName: firstName,
+        lastName: lastName,
+        age: age,
       })
       .execute();
 
@@ -49,7 +43,7 @@ export const index = async (
 
     const users = await userRepository
       .createQueryBuilder("user")
-      .leftJoinAndSelect("user.blogs", "blog.id")
+      .leftJoinAndSelect("user.blogs", "blog")
       .getMany();
 
     return res.status(200).json({
@@ -62,27 +56,26 @@ export const index = async (
 };
 
 // get user by id
-// export const show = async (
-//   req: express.Request,
-//   res: express.Response,
-//   next: express.NextFunction
-// ): Promise<any> => {
-//   try {
-//     const { id: id } = req.params;
+export const show = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<any> => {
+  try {
+    const { id: id } = req.params;
+    const userRepository = getRepository(User);
+    const user = await userRepository
+      .createQueryBuilder("user")
+      .where("user.id = :id", { id: id });
 
-//     const UserById = await User.findOne(id);
-//     if (!UserById) {
-//       return res.status(404).json({ message: "it's not id" });
-//     }
-
-//     return res
-//       .status(200)
-//       .json({ message: "get user by id is succesfully", data: UserById });
-//   } catch (error) {
-//     console.error(error);
-//     next(error);
-//   }
-// };
+    return res
+      .status(200)
+      .json({ message: "get user by id is succesfully", data: user });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
 
 // update user
 export const update = async (
@@ -91,19 +84,14 @@ export const update = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const {
-      user_id: user_id,
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-    } = req.body;
+    const { firstName: firstName, lastName: lastName, age: age } = req.body;
     const { id: id } = req.params;
     const userRepository = getRepository(User);
 
     const user = await userRepository
       .createQueryBuilder()
       .update(User)
-      .set({ user_id, firstName, lastName, age })
+      .set({ firstName: firstName, lastName: lastName, age: age })
       .where("id = :id", { id })
       .execute();
 
@@ -126,7 +114,7 @@ export const destroy = async (
     const { id: id } = req.params;
     const userRepository = getRepository(User);
 
-    const user = getRepository(User)
+    const user = await userRepository
       .createQueryBuilder()
       .delete()
       .from(User)
