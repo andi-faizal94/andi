@@ -4,7 +4,7 @@ import * as BlogController from "../../controllers/blog.controller";
 const router = express.Router();
 
 router.get("/blog", BlogController.index);
-// router.get("/user/:id", UserController.show);
+router.get("/blog/:id", BlogController.show);
 router.post("/blog", BlogController.store);
 router.put("/blog/:id", BlogController.update);
 router.delete("/blog/:id", BlogController.destroy);
