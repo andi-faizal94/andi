@@ -41,7 +41,7 @@ export const index = async (
 
     const blog = await blogRepository
       .createQueryBuilder("blogs")
-      .leftJoinAndSelect("blogs.user", "user_id")
+      .leftJoinAndSelect("blogs.user", "user")
       .getMany();
     return res.status(200).json({
       message: "get user succesfully",

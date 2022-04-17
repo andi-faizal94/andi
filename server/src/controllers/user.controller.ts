@@ -49,7 +49,7 @@ export const index = async (
 
     const users = await userRepository
       .createQueryBuilder("user")
-      .leftJoinAndSelect("user.posts", "posts.id")
+      .leftJoinAndSelect("user.blogs", "blog.id")
       .getMany();
 
     return res.status(200).json({
