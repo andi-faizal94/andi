@@ -23,7 +23,7 @@ export const store = async (
       .execute();
     return res.status(201).json({
       message: "created user succesfully",
-      data: [blog],
+      data: [{ Blog: blog }],
     });
   } catch (error) {
     next(error);
@@ -45,7 +45,7 @@ export const index = async (
       .getMany();
     return res.status(200).json({
       message: "get user succesfully",
-      data: blog,
+      data: { Blog: blog },
     });
   } catch (error) {
     next(error);
@@ -62,12 +62,14 @@ export const show = async (
     const { id: id } = req.params;
     const blogRepository = getRepository(Blog);
     const blog = await blogRepository
-      .createQueryBuilder("blog")
+      .createQueryBuilder()
+      .select("blog")
+      .from(Blog, "blog")
       .where("blog.id = :id", { id: id })
       .getOne();
     return res
       .status(200)
-      .json({ message: "get user by id is succesfully", data: blog });
+      .json({ message: "get user by id is succesfully", data: { Blog: blog } });
   } catch (error) {
     console.error(error);
     next(error);
@@ -93,7 +95,7 @@ export const update = async (
 
     return res.status(200).json({
       message: "update user succesfully",
-      data: blog,
+      data: { Blog: blog },
     });
   } catch (error) {
     next(error);
@@ -117,7 +119,7 @@ export const destroy = async (
       .execute();
     return res.status(200).json({
       message: `delete user ${id} succesfully`,
-      data: blog,
+      data: { Blog: blog },
     });
   } catch (error) {
     next(error);

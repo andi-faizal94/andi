@@ -25,7 +25,7 @@ export const store = async (
 
     return res.status(201).json({
       message: "created user succesfully",
-      data: [user],
+      data: [{ User: user }],
     });
   } catch (error) {
     next(error);
@@ -48,7 +48,7 @@ export const index = async (
 
     return res.status(200).json({
       message: "get user succesfully",
-      data: users,
+      data: { User: users },
     });
   } catch (error) {
     next(error);
@@ -65,12 +65,14 @@ export const show = async (
     const { id: id } = req.params;
     const userRepository = getRepository(User);
     const user = await userRepository
-      .createQueryBuilder("user")
+      .createQueryBuilder()
+      .select("user")
+      .from(User, "user")
       .where("user.id = :id", { id: id });
 
     return res
       .status(200)
-      .json({ message: "get user by id is succesfully", data: user });
+      .json({ message: "get user by id is succesfully", data: { User: user } });
   } catch (error) {
     console.error(error);
     next(error);
@@ -97,7 +99,7 @@ export const update = async (
 
     return res.status(200).json({
       message: "update user succesfully",
-      data: user,
+      data: { User: user },
     });
   } catch (error) {
     next(error);
@@ -122,7 +124,7 @@ export const destroy = async (
       .execute();
     return res.status(200).json({
       message: `delete user ${id} succesfully`,
-      data: user,
+      data: { User: user },
     });
   } catch (error) {
     next(error);
