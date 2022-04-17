@@ -9,7 +9,12 @@ export const store = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { title: title, image: image, content_blog: content_blog } = req.body;
+    const {
+      title: title,
+      image: image,
+      content_blog: content_blog,
+      user: userId,
+    } = req.body;
     const blogRepository = getRepository(Blog);
     const blog = await blogRepository
       .createQueryBuilder()
@@ -19,6 +24,7 @@ export const store = async (
         title: title,
         image: image,
         content_blog: content_blog,
+        user: userId,
       })
       .execute();
     return res.status(201).json({

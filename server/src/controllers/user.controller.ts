@@ -9,7 +9,12 @@ export const store = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { firstName: firstName, lastName: lastName, age: age } = req.body;
+    const {
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      age: age,
+    } = req.body;
     const userRepository = getRepository(User);
 
     const user = await userRepository
@@ -17,6 +22,7 @@ export const store = async (
       .insert()
       .into(User)
       .values({
+        id: id,
         firstName: firstName,
         lastName: lastName,
         age: age,
