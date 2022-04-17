@@ -25,7 +25,7 @@ export class Blog extends BaseEntity {
   @Column()
   content_blog: string;
 
-  @CreateDateColumn({ name: "updated_at", type: "timestamp", default: "now()" })
+  @CreateDateColumn({ name: "created_at", type: "timestamp", default: "now()" })
   createdAt: Date;
 
   @UpdateDateColumn({
