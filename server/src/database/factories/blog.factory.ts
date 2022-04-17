@@ -4,9 +4,9 @@ import { Blog } from "../../entity/Blog";
 
 define(Blog, (faker: typeof Faker) => {
   const gender = faker.random.uuid();
-  const title = faker.random.uuid();
-  const image = faker.name.firstName(gender);
-  const content_blog = faker.name.lastName(gender);
+  const title = faker.lorem.paragraph(gender);
+  const image = faker.random.word(gender);
+  const content_blog = faker.random.word(gender);
   const blog = new Blog();
   blog.title = title;
   blog.image = image;

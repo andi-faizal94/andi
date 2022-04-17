@@ -48,6 +48,6 @@ export class Blog extends BaseEntity {
     cascade: ["insert", "update"],
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "user", referencedColumnName: "user_id" })
   user: User;
 }
