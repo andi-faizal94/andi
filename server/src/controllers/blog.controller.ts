@@ -58,7 +58,7 @@ export const index = async (
   }
 };
 
-// get user by id
+// get blog by id
 export const show = async (
   req: Request,
   res: Response,
