@@ -1,22 +1,24 @@
-import * as express from "express";
+import { Request, Response, NextFunction } from "express";
 import { getConnection } from "typeorm";
 import { Blog } from "../entity/Blog";
+import { Paginate } from "./request/pagination";
 
 // create blog
 export const store = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { title, image, content_blog, user } = req.body;
+
     const blog = await getConnection()
       .createQueryBuilder()
       .insert()
       .into(Blog)
       .values({
         title,
-        image,
+        image: req.file && req.file.path,
         content_blog,
         user,
       })
@@ -32,16 +34,19 @@ export const store = async (
 
 // get all blog
 export const index = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
+    const query: Paginate = req.query;
     const blog = await getConnection()
       .createQueryBuilder()
       .select("blog")
       .from(Blog, "blog")
       .leftJoinAndSelect("blog.user", "user.id")
+      .skip(query.offset)
+      .take(query.limit)
       .getMany();
 
     return res.status(200).json({
@@ -55,9 +60,9 @@ export const index = async (
 
 // get user by id
 export const show = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { id } = req.params;
@@ -78,9 +83,9 @@ export const show = async (
 
 // update blog
 export const update = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { id } = req.params;
@@ -108,9 +113,9 @@ export const update = async (
 
 // delete blog
 export const destroy = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { id } = req.params;

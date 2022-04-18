@@ -1,12 +1,13 @@
-import * as express from "express";
+import { Request, Response, NextFunction } from "express";
 import { getConnection } from "typeorm";
 import { User } from "../entity/User";
+import { Paginate } from "./request/pagination";
 
 // create user
 export const store = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { id, firstName, lastName, age } = req.body;
@@ -34,16 +35,19 @@ export const store = async (
 
 // get all user
 export const index = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
+    const query: Paginate = req.query;
     const user = await getConnection()
       .createQueryBuilder()
       .select("user")
       .from(User, "user")
       .leftJoinAndSelect("user.blogs", "blogs")
+      .skip(query.offset)
+      .take(query.limit)
       .getMany();
     return res.status(200).json({
       message: "get user succesfully",
@@ -56,9 +60,9 @@ export const index = async (
 
 // get user by id
 export const show = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { id } = req.params;
@@ -81,9 +85,9 @@ export const show = async (
 
 // update user
 export const update = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { firstName, lastName, age } = req.body;
@@ -107,9 +111,9 @@ export const update = async (
 
 // delete user
 export const destroy = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const { id } = req.params;
