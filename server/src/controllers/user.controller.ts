@@ -9,22 +9,17 @@ export const store = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const {
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      age: age,
-    } = req.body;
+    const { id, firstName, lastName, age } = req.body;
 
     const user = await getConnection()
       .createQueryBuilder()
       .insert()
       .into(User)
       .values({
-        id: id,
-        firstName: firstName,
-        lastName: lastName,
-        age: age,
+        id,
+        firstName,
+        lastName,
+        age,
       })
       .execute();
 
@@ -37,14 +32,14 @@ export const store = async (
   }
 };
 
-// get all data
+// get all user
 export const index = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const users = await getConnection()
+    const user = await getConnection()
       .createQueryBuilder()
       .select("user")
       .from(User, "user")
@@ -52,7 +47,7 @@ export const index = async (
       .getMany();
     return res.status(200).json({
       message: "get user succesfully",
-      data: { User: users },
+      data: { User: user },
     });
   } catch (error) {
     next(error);
@@ -67,16 +62,16 @@ export const show = async (
 ): Promise<any> => {
   try {
     const { id } = req.params;
-    const users = await getConnection()
+    const user = await getConnection()
       .createQueryBuilder()
       .select("user")
       .from(User, "user")
-      .where("user.id = :id", { id: id })
+      .where("user.id = :id", { id })
       .getOne();
 
     return await res.status(200).json({
       message: "get user succesfully",
-      data: { User: users },
+      data: { User: user },
     });
   } catch (error) {
     console.error(error);
@@ -91,14 +86,14 @@ export const update = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { firstName: firstName, lastName: lastName, age: age } = req.body;
-    const { id: id } = req.params;
+    const { firstName, lastName, age } = req.body;
+    const { id } = req.params;
 
     const user = await getConnection()
       .createQueryBuilder()
       .update(User)
-      .set({ firstName: firstName, lastName: lastName, age: age })
-      .where("id = :id", { id: id })
+      .set({ firstName, lastName, age })
+      .where("id = :id", { id })
       .execute();
 
     return await res.status(200).json({
@@ -117,14 +112,8 @@ export const destroy = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { id: id } = req.params;
+    const { id } = req.params;
     const user = await getConnection()
-      // .createQueryBuilder()
-      // .delete()
-      // .from(User)
-      // .where("id = :id", { id: id })
-      // .execute();
-
       .createQueryBuilder()
       .select("user.id", "id")
       .from(User, "user")

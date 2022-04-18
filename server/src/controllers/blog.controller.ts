@@ -1,5 +1,5 @@
 import * as express from "express";
-import { getConnection, getRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Blog } from "../entity/Blog";
 
 // create blog
@@ -9,21 +9,16 @@ export const store = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const {
-      title: title,
-      image: image,
-      content_blog: content_blog,
-      user: userId,
-    } = req.body;
+    const { title, image, content_blog, user } = req.body;
     const blog = await getConnection()
       .createQueryBuilder()
       .insert()
       .into(Blog)
       .values({
-        title: title,
-        image: image,
-        content_blog: content_blog,
-        user: userId,
+        title,
+        image,
+        content_blog,
+        user,
       })
       .execute();
     return res.status(201).json({
@@ -35,14 +30,13 @@ export const store = async (
   }
 };
 
-// get all data
+// get all blog
 export const index = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { firstName: firstName } = req.query;
     const blog = await getConnection()
       .createQueryBuilder()
       .select("blog")
@@ -71,7 +65,7 @@ export const show = async (
       .createQueryBuilder()
       .select("blog")
       .from(Blog, "blog")
-      .where("blog.id = :id", { id: id })
+      .where("blog.id = :id", { id })
       .getOne();
     return res
       .status(200)
@@ -89,22 +83,16 @@ export const update = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { id: id } = req.params;
-
-    const {
-      title: title,
-      image: image,
-      content_blog: content_blog,
-      user: userId,
-    } = req.body;
-    const user = await getConnection()
+    const { id } = req.params;
+    const { title, image, content_blog, user } = req.body;
+    const blog = await getConnection()
       .createQueryBuilder()
       .update(Blog)
       .set({
-        title: title,
-        image: image,
-        content_blog: content_blog,
-        user: userId,
+        title,
+        image,
+        content_blog,
+        user,
       })
       .where("id = :id", { id: id })
       .execute();
@@ -125,12 +113,12 @@ export const destroy = async (
   next: express.NextFunction
 ): Promise<any> => {
   try {
-    const { id: id } = req.params;
-    const user = await getConnection()
+    const { id } = req.params;
+    const blog = await getConnection()
       .createQueryBuilder()
       .delete()
       .from(Blog)
-      .where("id = :id", { id: id })
+      .where("id = :id", { id })
       .execute();
 
     return res.status(200).json({
