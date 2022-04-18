@@ -118,13 +118,19 @@ export const destroy = async (
 ): Promise<any> => {
   try {
     const { id: id } = req.params;
-
     const user = await getConnection()
+      // .createQueryBuilder()
+      // .delete()
+      // .from(User)
+      // .where("id = :id", { id: id })
+      // .execute();
+
       .createQueryBuilder()
-      .delete()
-      .from(User)
-      .where("id = :id", { id: id })
-      .execute();
+      .select("user.id", "id")
+      .from(User, "user")
+      .withDeleted()
+      .getMany();
+
     return await res.status(200).json({
       message: `delete user ${id} succesfully`,
       data: { User: id },

@@ -47,7 +47,7 @@ export const index = async (
       .createQueryBuilder()
       .select("blog")
       .from(Blog, "blog")
-      .leftJoinAndSelect("blog.user", "blog")
+      .leftJoinAndSelect("blog.user", "user.id")
       .getMany();
 
     return res.status(200).json({
@@ -130,10 +130,11 @@ export const destroy = async (
       .createQueryBuilder()
       .delete()
       .from(Blog)
-      .where("id = :id", { id: id });
+      .where("id = :id", { id: id })
+      .execute();
 
     return res.status(200).json({
-      message: `delete user ${id} succesfully`,
+      message: `delete blog ${id} succesfully`,
       data: { Blog: id },
     });
   } catch (error) {
