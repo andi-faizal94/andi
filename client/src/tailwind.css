@@ -18,6 +18,11 @@
     @apply cursor-pointer;
   }
 }
+.active {
+  font-weight: 600;
+  border-bottom: 0.5px solid rgb(72, 196, 234);
+  transition: 6ms;
+}
 
 .content-div {
   background-repeat: no-repeat;

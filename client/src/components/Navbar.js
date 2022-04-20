@@ -16,7 +16,14 @@ const Navbar = () => {
   return (
     <nav className="fixed w-full h-[80px] flex justify-between items-center px-4 bg-[#0a192f] text-gray-300">
       <div>
-        <NavLink className="NavLink scroll-smooth" to="/" duration={500}>
+        <NavLink
+          className={(
+            { NavLink } //(isActive) --> ({isActive})
+          ) => (NavLink ? "isActive NavLink " : "NavLink scroll-smooth")}
+          // className="NavLink scroll-smooth"
+          to="/"
+          duration={500}
+        >
           <h1>Andi Dev.</h1>
         </NavLink>
       </div>
