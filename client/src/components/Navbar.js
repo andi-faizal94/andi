@@ -19,7 +19,11 @@ const Navbar = () => {
         <NavLink
           className={(
             { NavLink } //(isActive) --> ({isActive})
-          ) => (NavLink ? "isActive NavLink " : "NavLink scroll-smooth")}
+          ) =>
+            NavLink
+              ? "isActive NavLink cursor-pointer"
+              : "NavLink scroll-smooth"
+          }
           // className="NavLink scroll-smooth"
           to="/"
           duration={500}
@@ -30,23 +34,39 @@ const Navbar = () => {
 
       {/* menu */}
       <ul className="hidden md:flex">
-        <NavLink className="NavLink scroll-smooth" to="/" duration={500}>
+        <NavLink
+          className="NavLink scroll-smooth cursor-pointer"
+          to="/"
+          duration={500}
+        >
           Home
         </NavLink>
-        <NavLink className="NavLink scroll-smooth" to="/about" duration={500}>
+        <NavLink
+          className="NavLink scroll-smooth cursor-pointer"
+          to="/about"
+          duration={500}
+        >
           About
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth"
+          className="NavLink scroll-smooth cursor-pointer"
           to="/portofolio"
           duration={500}
         >
           Portofolio
         </NavLink>
-        <NavLink className="NavLink scroll-smooth" to="/blog" duration={500}>
+        <NavLink
+          className="NavLink scroll-smooth cursor-pointer"
+          to="/blog"
+          duration={500}
+        >
           Blog
         </NavLink>
-        <NavLink className="NavLink scroll-smooth" to="/contact" duration={500}>
+        <NavLink
+          className="NavLink scroll-smooth cursor-pointer"
+          to="/contact"
+          duration={500}
+        >
           Contact
         </NavLink>
       </ul>
