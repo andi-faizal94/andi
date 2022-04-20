@@ -28,42 +28,42 @@ const Navbar = () => {
           to="/"
           duration={500}
         >
-          <h1 className="hover:text-gray-100">Andi Dev.</h1>
+          <h1 className="hover:text-gray-100 hover:scale-x-110">Andi Dev.</h1>
         </NavLink>
       </div>
 
       {/* menu */}
       <ul className="hidden md:flex">
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100 hover:scale-x-110"
           to="/"
           duration={500}
         >
           Home
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100 hover:scale-x-110"
           to="/about"
           duration={500}
         >
           About
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100 hover:scale-x-110"
           to="/portofolio"
           duration={500}
         >
           Portofolio
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100 hover:scale-x-110"
           to="/blog"
           duration={500}
         >
           Blog
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100 hover:scale-x-110"
           to="/contact"
           duration={500}
         >
