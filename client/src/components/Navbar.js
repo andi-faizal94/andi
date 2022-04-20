@@ -21,49 +21,49 @@ const Navbar = () => {
             { NavLink } //(isActive) --> ({isActive})
           ) =>
             NavLink
-              ? "isActive NavLink cursor-pointer"
+              ? "isActive NavLink cursor-pointer hover:text-gray-100"
               : "NavLink scroll-smooth"
           }
           // className="NavLink scroll-smooth"
           to="/"
           duration={500}
         >
-          <h1>Andi Dev.</h1>
+          <h1 className="hover:text-gray-100">Andi Dev.</h1>
         </NavLink>
       </div>
 
       {/* menu */}
       <ul className="hidden md:flex">
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
           to="/"
           duration={500}
         >
           Home
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
           to="/about"
           duration={500}
         >
           About
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
           to="/portofolio"
           duration={500}
         >
           Portofolio
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
           to="/blog"
           duration={500}
         >
           Blog
         </NavLink>
         <NavLink
-          className="NavLink scroll-smooth cursor-pointer"
+          className="NavLink scroll-smooth cursor-pointer hover:text-gray-100"
           to="/contact"
           duration={500}
         >
@@ -85,7 +85,7 @@ const Navbar = () => {
         }
       >
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
           onClick={handleClick}
           to="/"
           duration={500}
@@ -93,7 +93,7 @@ const Navbar = () => {
           Home
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
           onClick={handleClick}
           to="/about"
           duration={500}
@@ -101,7 +101,7 @@ const Navbar = () => {
           About
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
           onClick={handleClick}
           to="/portofolio"
           duration={500}
@@ -109,7 +109,7 @@ const Navbar = () => {
           Portofolio
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
           onClick={handleClick}
           to="/blog"
           duration={500}
@@ -117,7 +117,7 @@ const Navbar = () => {
           Blog
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
           onClick={handleClick}
           to="/contact"
           duration={500}
