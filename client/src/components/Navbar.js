@@ -28,7 +28,12 @@ const Navbar = () => {
           to="/"
           duration={500}
         >
-          <h1 className="hover:text-gray-100 hover:scale-x-110">Andi Dev.</h1>
+          <h1 className="hover:text-gray-100 font-bold hover:scale-x-110">
+            Andi
+            <span className="text-green-400 font-bold font-serif ">
+              .Faizal
+            </span>{" "}
+          </h1>
         </NavLink>
       </div>
 

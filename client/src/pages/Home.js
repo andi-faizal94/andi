@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 const Home = () => {
@@ -18,9 +19,15 @@ const Home = () => {
           designing) exceptional digital experiences. Currently, I’m focused on
           building responsive full-stack web applications.
         </p>
-        <div>
+        <div className="flex">
+          <button className="text-white group border-2 px-6 py-3 mx-2 my-2 flex items-center hover:bg-pink-600 hover:border-pink-600">
+            <Link to="/portofolio">View Work</Link>
+            <span className="group-hover:rotate-90 duration-300">
+              <HiArrowNarrowRight className="ml-3 " />
+            </span>
+          </button>
           <button className="text-white group border-2 px-6 py-3 my-2 flex items-center hover:bg-pink-600 hover:border-pink-600">
-            View Work
+            <Link to="/contact">Contact </Link>
             <span className="group-hover:rotate-90 duration-300">
               <HiArrowNarrowRight className="ml-3 " />
             </span>
