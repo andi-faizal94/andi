@@ -4,6 +4,7 @@ export const store = celebrate({
   body: {
     title: Joi.string().max(50).required(),
     content_blog: Joi.string().required(),
+    user: Joi.string().guid(),
   },
 });
 export const index = celebrate({
@@ -24,6 +25,7 @@ export const update = celebrate({
   body: {
     title: Joi.string().max(50).required(),
     content_blog: Joi.string().required(),
+    user: Joi.string().guid(),
   },
 });
 export const destroy = celebrate({
