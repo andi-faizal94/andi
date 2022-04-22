@@ -30,8 +30,8 @@ const Navbar = () => {
         >
           <h1 className="hover:text-gray-100 font-bold hover:scale-x-110">
             Andi
-            <span className="text-green-400 font-bold font-serif ">
-              .Faizal
+            <span className="ml-1 text-green-400 font-bold font-serif ">
+              Faizal
             </span>{" "}
           </h1>
         </NavLink>
@@ -78,7 +78,11 @@ const Navbar = () => {
 
       {/* Hamburger */}
       <div onClick={handleClick} className="md:hidden z-10">
-        {!nav ? <FaBars /> : <FaTimes />}
+        {!nav ? (
+          <FaBars className="transition duration-500 ease-out" />
+        ) : (
+          <FaTimes className="transition duration-500 ease-out" />
+        )}
       </div>
 
       {/* Mobile menu */}
@@ -90,42 +94,42 @@ const Navbar = () => {
         }
       >
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100 duration-75"
           onClick={handleClick}
           to="/"
-          duration={500}
+          duration={100}
         >
           Home
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100 duration-100"
           onClick={handleClick}
           to="/about"
-          duration={500}
+          duration={100}
         >
           About
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100 duration-200"
           onClick={handleClick}
           to="/portofolio"
-          duration={500}
+          duration={100}
         >
           Portofolio
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100 duration-300"
           onClick={handleClick}
           to="/blog"
-          duration={500}
+          duration={100}
         >
           Blog
         </NavLink>
         <NavLink
-          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100"
+          className="NavLink py-6 text-4xl scroll-smooth hover:text-gray-100 duration-500"
           onClick={handleClick}
           to="/contact"
-          duration={500}
+          duration={100}
         >
           Contact
         </NavLink>
