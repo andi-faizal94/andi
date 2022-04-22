@@ -41,7 +41,9 @@ function About() {
         <p className="p-4 max-w-[700px] text-[#ccd6f6] tracking-tighter">
           Backend :
         </p>
-        <p className="px-4 text-[#ccd6f6] tracking-tighter">- Node JS</p>
+        <p className="px-4 max-w-[700px] text-[#ccd6f6] tracking-wide">
+          - Node JS
+        </p>
         <p className="px-4 max-w-[700px] text-[#ccd6f6] tracking-wide">
           - Express JS
         </p>
